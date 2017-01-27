@@ -13,11 +13,18 @@ struct ValidationOptions : OptionSet {
     
     static let digits = ValidationOptions(rawValue: 1 << 0)
     static let letters = ValidationOptions(rawValue: 1 << 1)
-    static let other = ValidationOptions(rawValue: 1 << 2) //idk how to name this option 🙂
+    static let other = ValidationOptions(rawValue: 1 << 2)
 }
 
 final class Validator {
-    static func validate(string: String?,
+    private init() {
+    }
+    
+    static let shared = Validator()
+    
+    var forbidEmoji = true
+    
+    func validate(string: String?,
                          with options: ValidationOptions?,
                          maxLength: Int,
                          minLength: Int = 1,
@@ -40,6 +47,12 @@ final class Validator {
         
         guard let unwrappedOptions = options, !unwrappedOptions.isEmpty else {
             return true
+        }
+        
+        if Validator.shared.forbidEmoji {
+            if unwrappedString.containsEmoji {
+                return false
+            }
         }
         
         var suitableSymbolsCharacterSet = CharacterSet()
@@ -66,7 +79,7 @@ final class Validator {
         return true
     }
     
-    static func isEmail(string: String?) -> Bool {
+    func isEmail(string: String?) -> Bool {
         guard let unwrappedString = string else {
             return false
         }
