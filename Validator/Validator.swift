@@ -45,14 +45,14 @@ final class Validator {
             }
         }
         
-        guard let unwrappedOptions = options, !unwrappedOptions.isEmpty else {
-            return true
-        }
-        
         if Validator.shared.forbidEmoji {
             if unwrappedString.containsEmoji {
                 return false
             }
+        }
+        
+        guard let unwrappedOptions = options, !unwrappedOptions.isEmpty else {
+            return true
         }
         
         var suitableSymbolsCharacterSet = CharacterSet()
