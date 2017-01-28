@@ -23,26 +23,25 @@ final class Validator {
     static let shared = Validator()
     
     var forbidEmoji = true
+    var shouldTream = false
     
-    func validate(string: String?,
+    func validate(_ string: String?,
                          with options: ValidationOptions?,
                          maxLength: Int,
-                         minLength: Int = 1,
-                         shouldBeSameAsTheMaxRange: Bool = false) -> Bool {
-        guard let unwrappedString = string,
-            unwrappedString.isEmpty == false,
-            unwrappedString.characters.count >= minLength  else {
+                         minLength: Int = 1) -> Bool {
+        assert(minLength <= maxLength, "Minimal length of string can not be greater then Maximum length")
+        assert(minLength >= 0 && maxLength >= 0, "Minamal and Maximum length must be greater or equal zero")
+        
+        guard var unwrappedString = string else {
                 return false
         }
         
-        if shouldBeSameAsTheMaxRange {
-            if unwrappedString.characters.count != maxLength {
-                return false
-            }
-        } else {
-            if unwrappedString.characters.count > maxLength {
-                return false
-            }
+        if shouldTream {
+            unwrappedString = unwrappedString.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        
+        if !(minLength...maxLength ~= unwrappedString.characters.count)  {
+            return false
         }
         
         if Validator.shared.forbidEmoji {
