@@ -16,14 +16,15 @@ struct ValidationOptions : OptionSet {
     static let other = ValidationOptions(rawValue: 1 << 2)
 }
 
-final class Validator {
+final class ValidatorService {
     private init() {
     }
     
-    static let shared = Validator()
+    static let shared = ValidatorService()
     
     var forbidEmoji = true
     var shouldTream = false
+    var allowSpacesInside = false
     
     func validate(_ string: String?,
                          with options: ValidationOptions?,
@@ -44,7 +45,7 @@ final class Validator {
             return false
         }
         
-        if Validator.shared.forbidEmoji {
+        if ValidatorService.shared.forbidEmoji {
             if unwrappedString.containsEmoji {
                 return false
             }
@@ -67,6 +68,10 @@ final class Validator {
         if unwrappedOptions.contains(.other) {
             let digitsAndLettersCharacterSet = CharacterSet.decimalDigits.union(CharacterSet.letters)
             suitableSymbolsCharacterSet = suitableSymbolsCharacterSet.union(digitsAndLettersCharacterSet.inverted)
+        }
+        
+        if allowSpacesInside {
+            suitableSymbolsCharacterSet.insert(charactersIn: " ")
         }
         
         let notSuitableCharacterSet = suitableSymbolsCharacterSet.inverted
