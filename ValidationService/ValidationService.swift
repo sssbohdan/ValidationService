@@ -16,11 +16,11 @@ struct ValidationOptions : OptionSet {
     static let other = ValidationOptions(rawValue: 1 << 2)
 }
 
-final class ValidatorService {
+final class ValidationService {
     private init() {
     }
     
-    static let shared = ValidatorService()
+    static let shared = ValidationService()
     
     var forbidEmoji = true
     var shouldTream = false
@@ -45,7 +45,7 @@ final class ValidatorService {
             return false
         }
         
-        if ValidatorService.shared.forbidEmoji {
+        if forbidEmoji {
             if unwrappedString.containsEmoji {
                 return false
             }
