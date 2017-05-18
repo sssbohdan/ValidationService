@@ -1,6 +1,6 @@
 //
 //  Validator.swift
-//  Vyykn
+//
 //
 //  Created by Bohdan Savych on 1/17/17.
 //  Copyright © 2017 Bohdan Savych. All rights reserved.
@@ -24,17 +24,17 @@ final class ValidationService {
     
     var forbidEmoji = true
     var shouldTream = false
-    var allowSpacesInside = false
     
-    func validate(_ string: String?,
-                         with options: ValidationOptions?,
-                         maxLength: Int,
-                         minLength: Int = 1) -> Bool {
+    func validate(string: String?,
+                  with options: ValidationOptions?,
+                  maxLength: Int,
+                  minLength: Int = 1,
+                  allowSpacesInside: Bool = false) -> Bool {
         assert(minLength <= maxLength, "Minimal length of string can not be greater then Maximum length")
         assert(minLength >= 0 && maxLength >= 0, "Minamal and Maximum length must be greater or equal zero")
         
         guard var unwrappedString = string else {
-                return false
+            return false
         }
         
         if shouldTream {
