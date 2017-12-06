@@ -41,7 +41,7 @@ final class ValidationService {
             unwrappedString = unwrappedString.trimmingCharacters(in: .whitespacesAndNewlines)
         }
         
-        if !(minLength...maxLength ~= unwrappedString.characters.count)  {
+        if !(minLength...maxLength ~= unwrappedString.count)  {
             return false
         }
         
